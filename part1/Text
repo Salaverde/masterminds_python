@@ -1,0 +1,70 @@
+Et despertes en una habitació, estirat al llit. Estàs desorientat i et mareges a l'aixecar-te. Mires al teu voltant i veus una finestra i una porta.
+La porta està tancada amb clau.
+Què vols fer?
+A. Mirar per la finestra.
+B. Mirar sota el llit.
+
+		[OPCIÓ A]
+		Obres la finestra i treus el cap. Notes un moviment darrera teu i de sobtes estàs en caiguda lliure. La caiguda de 70 metres et mata.
+		Estàs mort.
+
+		[OPCIÓ B}
+		Mires a sota el llit. Veus que hi ha una clau al terra.
+		Agafes la clau.
+
+		Què vols fer?
+		A. Mirar per la finestra.
+		B. Obrir la porta amb la clau.
+
+		[OPCIÓ A]
+		Obres la finestr a i treus el cap. Notes un moviment darrera teu i de sobtes estàs en caiguda lliure. La caiguda de 70 metres et mata.
+		Estàs mort.
+
+		[OPCIÓ B]
+		Obres la porta i et trobes en un passadís. Pots anar cap a la dreta o cap a l'esquerra.
+		A. Dreta.
+		B. Esquerra.
+
+		    [OPCIÓ A]
+
+		    Segueixes el passadís cap a la dreta.
+		    Veus un bastó arrepenjat en una cantonada. Vols agafar-lo? (S/N)
+
+
+		    De sobte tot es cobreix de fum i et desorientes.
+		    Començes a tossir i de sobte veus alguna cosa que brilla entre el fum.
+		    T'hi acostes i veus una mena de geni.
+		    Et diu que ell est desvelarà si la fortuna et somriu o no.
+		    Per a saber-ho, et demana que li diguis quin número et ve a la ment si et diu " 12 * {}."
+
+		    - El geni es rasca el cap. Sembla sorprès. Et diu que la fortuna et somriurà i et deixa passar.
+		    - El geni es posa seriós. Diu que la fortuna se t'ha girat en contra. Fa petar els dits i et converteix en una granota.
+		    HAS PERDUT.
+		    [OPCIÓ B]
+
+		    Segueixes el passadís cap a l'esquerra.
+		    Assegut en una cadira al mig del passadís hi ha un fullet força petit però armat fins les dents.
+		    Et pregunta si ets partidari de la casa Borbó o la dels Àustria.
+		    La veritat és que no tens ni idea de què parla, però no sembla bona idea ignorar-lo.
+		    Què li dius?
+		    A: Borbó
+		    B: Àustria
+
+
+		    RANDOM:
+		    50% En sentir la teva resposta, el follut es comença a posar vermell i et salta al damunt.
+		        Et cus a ganivetades sense que puguis defensar-te i caus al terra mort.
+		    50% De sobte el seu posat canvia. Et somriu i s'ofereix a acompanyar-te cap a la sortida.
+
+Segueixes/seguiu pel passadís fins a una sala enorme. De sobte, sents una veu que ve del fons de la sala.
+"Qui gosa venir a enfrontar-se a mi al meu propi palau?"
+Tot seguit, veus una figura vermella lliscar àgilment en la teva direcció.
+Mentre s'acosta li mires la cara. Té la cara vermella, amb banyes, uns ull grocs brillants i una cua ben llarga.
+El dimoni en persona!
+
+- Abans que puguis fer-hi res s'acosta a tu i t'arrenca el cor sense cap dificultat. ESTÀS MORT!
+- Es llença cap a tu, però el follet s'interposa entre vosaltres dos. Comencen a lluitar i tu aprofites per fugir. ENHORABONA, HAS ESCAPAT AMB ÈXIT!
+- Es llença cap a tu, però tu li pegues un cop amb el bastó. Això el sorprèn i es desequilibra.
+    Cau al terra amb la mala sort que es dóna un cop al cap i cap estabornit. Aprofites per fugir.
+    ENHORABONA, HAS FUGIT AMB ÈXIT!
+
