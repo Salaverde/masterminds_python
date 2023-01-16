@@ -65,14 +65,14 @@ def check_victory():
         if deck[winner_play[0]] == deck[winner_play[1]] == deck[winner_play[2]] != 0:
             if deck[winner_play[0]] == PLAYER_ONE:
                 window.Element("-WINNER-").update("El jugador 1 ha ganado!")
-
+                game_end = True
             else:
                 window.Element("-WINNER-").update("El jugador 2 ha ganado!")
-
+                game_end = True
 
 
 def reset_game():
-    global deck, current_player
+    global deck, current_player, game_end
     current_player = PLAYER_ONE
     for button_number in range(9):
         reset_button = "-" + str(button_number) + "-"
@@ -81,6 +81,7 @@ def reset_game():
                 0, 0, 0,
                 0, 0, 0]
     window.Element("-WINNER-").update("")
+    game_end = False
 
 
 if __name__ == "__main__":
