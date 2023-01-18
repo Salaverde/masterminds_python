@@ -20,7 +20,8 @@ layout = [[
         Sg.Button("", key="-6-", size=button_size),
         Sg.Button("", key="-7-", size=button_size),
         Sg.Button("", key="-8-", size=button_size)],
-    [Sg.Button("Reiniciar", key="-R-", size=(7, 2)), Sg.Text("", key="-WINNER-")]
+        [Sg.Text("", key="-WINNER-")],
+        [Sg.Button("Reiniciar", key="-R-", size=(7, 2))]
 
 ]
 window = Sg.Window("Tres en raya", layout)
@@ -65,10 +66,9 @@ def check_victory():
         if deck[winner_play[0]] == deck[winner_play[1]] == deck[winner_play[2]] != 0:
             if deck[winner_play[0]] == PLAYER_ONE:
                 window.Element("-WINNER-").update("El jugador 1 ha ganado!")
-                game_end = True
             else:
                 window.Element("-WINNER-").update("El jugador 2 ha ganado!")
-                game_end = True
+            game_end = True
 
 
 def reset_game():
