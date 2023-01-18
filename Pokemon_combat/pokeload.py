@@ -40,15 +40,17 @@ def get_pokemon(index):
 
 def get_all_pokemons():
     try:
+        print("Cargando lista de pokemons...")
         with open("pokefile.pkl", "rb") as pokefile:
             all_pokemons = pickle.load(pokefile)
     except FileNotFoundError:
         all_pokemons = []
+        print("\nLista de pokemons no encontrada!\n Descargando de internet...")
         for index in range(151):
             all_pokemons.append(get_pokemon(index + 1))
+            print("*")
         with open("pokefile.pkl", "wb") as pokefile:
             pickle.dump(all_pokemons, pokefile)
+    print("¡Lista de pokemons cargada!")
     return all_pokemons
 
-
-print(get_all_pokemons())
