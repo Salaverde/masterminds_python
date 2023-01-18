@@ -16,7 +16,16 @@ def get_player_profile(pokemon_list):
 def main():
     pokemon_list = get_all_pokemons()
     player_profile = get_player_profile(pokemon_list)
-    print(player_profile)
+    while any_player_pokemon_lives(player_profile):
+        fight()
+    print("Todos tus pokemon se han debilitado!\n Has sobrevivido {} combates.".format(player_profile["combats"]))
+
+def any_player_pokemon_lives:
+
+
+def fight():
+
+
 
 
 if __name__ == "__main__":
