@@ -33,6 +33,9 @@ def get_pokemon(index):
             "min_level": attack_item.find("th")[1].text,
             "damage": int(attack_item.find("td")[3].text.replace("--", "0"))
         }
+        if attack["min_level"] == "":
+            attack["min_level"] = 1
+        attack["min_level"] = int(attack["min_level"])
         new_pokemon["attacks"].append(attack)
 
     return new_pokemon
@@ -48,9 +51,8 @@ def get_all_pokemons():
         print("\nLista de pokemons no encontrada!\n Descargando de internet...")
         for index in range(151):
             all_pokemons.append(get_pokemon(index + 1))
-            print("*")
+            print("*", end="")
         with open("pokefile.pkl", "wb") as pokefile:
             pickle.dump(all_pokemons, pokefile)
     print("¡Lista de pokemons cargada!")
     return all_pokemons
-
