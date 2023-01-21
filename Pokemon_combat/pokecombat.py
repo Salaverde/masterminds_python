@@ -1,13 +1,16 @@
-import random, os
+import random
+import os
+import time
 from pokeload import get_all_pokemons
 
 
 def get_player_profile(pokemon_list):
+    os.system("cls")
     return {
         "player_name": input("¿Cuál es tu nombre?\n"),
         "pokemon_inventory": [random.choice(pokemon_list) for a in range(3)],
         "combats": 0,
-        "pokeballs": 0,
+        "pokeballs": 5,
         "health_potion": 0
     }
 
@@ -28,9 +31,9 @@ def choose_pokemon(player_profile):
         for pokemon in player_profile["pokemon_inventory"]:
             if pokemon["current_health"] == 0:
                 player_profile["pokemon_inventory"].remove(pokemon)
-            else:
-                print(index, get_pokemon_info(pokemon))
-                index += 1
+        for pokemon in player_profile["pokemon_inventory"]:
+            print(index, get_pokemon_info(pokemon))
+            index += 1
         try:
             chosen_pokemon = player_profile["pokemon_inventory"][int(input()) - 1]
         except (ValueError, IndexError):
@@ -102,7 +105,7 @@ def enemy_turn(player_pokemon, enemy_attack, enemy_pokemon):
 def capture_pokemon(enemy_pokemon):
     captured = None
     capturing_prob = (enemy_pokemon["current_health"] / enemy_pokemon["base_health"]) * 100
-    if capturing_prob > random.randint(1, 100):
+    if capturing_prob < random.randint(1, 100):
         captured = True
     return captured
 
@@ -135,7 +138,7 @@ def decide_type_effect(attack_type, pokemon_type):
         elif pokemon_type in weakness[attack_type]:
             return 0.5
         else:
-                return 1
+            return 1
     except KeyError:
         return 1
 
@@ -163,8 +166,9 @@ def fortune_loot():
 
 
 def fight(player_profile, enemy_pokemon):
+    os.system("cls")
     print("Que empiece el combate número {}!\nTe vas a enfrentar a {}.".format(player_profile["combats"] + 1,
-                                                                                 enemy_pokemon["name"]))
+                                                                               enemy_pokemon["name"]))
     player_pokemon = choose_pokemon(player_profile)
     captured_pokemon = None
     attack_history = []
@@ -173,12 +177,16 @@ def fight(player_profile, enemy_pokemon):
         action = None
 
         while action not in ["A", "P", "V", "C"]:
+            os.system("cls")
             print(get_pokemon_info(player_pokemon))
             print(get_pokemon_info(enemy_pokemon))
-            action = input("Qué quieres hacer? [A]tacar, usar una [P]okeball, usar una Poción de [V]ida o [C]ambiar de Pokemon?")
+            action = input("Qué quieres hacer? [A]tacar, usar una [P]okeball ({}), "
+                           "usar una Poción de [V]ida ({}) o [C]ambiar de Pokemon?".format(player_profile["pokeballs"],
+                                                                                           player_profile["health_potion"]))
             os.system("cls")
         if action == "A":
             player_attack = choose_player_attack(player_pokemon, enemy_pokemon)
+            os.system("cls")
             enemy_pokemon["current_health"] = player_turn(player_pokemon, player_attack, enemy_pokemon)
             attack_history.append(player_pokemon)
         elif action == "P":
@@ -187,7 +195,11 @@ def fight(player_profile, enemy_pokemon):
                 if capture_pokemon(enemy_pokemon):
                     player_profile["pokemon_inventory"].append(enemy_pokemon)
                     print("{} capturado!".format(enemy_pokemon["name"]))
+                    time.sleep(2)
                     captured_pokemon = True
+                else:
+                    print("Oh, no! El {} enemigo se ha escapado!".format(enemy_pokemon["name"]))
+                    time.sleep(2)
                 player_profile["pokeballs"] -= 1
             else:
                 print("No tienes pokeballs!")
@@ -207,6 +219,7 @@ def fight(player_profile, enemy_pokemon):
         if player_pokemon["current_health"] > 0 and enemy_pokemon["current_health"] > 0 and not missed_turn and not captured_pokemon:
             enemy_attack = random.choice(choose_enemy_attack(enemy_pokemon))
             player_pokemon["current_health"] = enemy_turn(player_pokemon, enemy_attack, enemy_pokemon)
+            time.sleep(3)
 
         if player_pokemon["current_health"] == 0 and any_player_pokemon_lives(player_profile):
             print("Tu {} se ha debilitado!".format(player_pokemon["name"]))
@@ -215,8 +228,9 @@ def fight(player_profile, enemy_pokemon):
     if enemy_pokemon["current_health"] == 0:
         print("El {} enemigo se ha debilitado! Has ganado!".format(enemy_pokemon["name"]))
         assign_experience(attack_history)
-
-    enemy_pokemon["current_health"] = enemy_pokemon["base_health"]
+        time.sleep(2)
+    if not captured_pokemon:
+        enemy_pokemon["current_health"] = enemy_pokemon["base_health"]
 
 
 def main():
@@ -233,7 +247,7 @@ def main():
         elif fortune_loot() == "pokeballs":
             player_profile["pokeballs"] += 1
             print("Has recibido una pokeball!")
-    print("Todos tus pokemon se han debilitado!\n Felicidades, {}.\nHas sobrevivido {} combates.".format(player_profile["player_name"],
+    print("Todos tus pokemon se han debilitado!\nFelicidades, {}.\nHas sobrevivido {} combates.".format(player_profile["player_name"],
                                                                                                          player_profile["combats"]))
 
 
