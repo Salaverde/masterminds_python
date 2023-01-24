@@ -5,6 +5,8 @@ from pokeload import get_all_pokemons
 
 
 def get_player_profile(pokemon_list):
+    # Returns a dictionary with the player's profile after asking for its name and choosing random Pokemon from
+    # pokefile.pkl.
     os.system("cls")
     return {
         "player_name": input("¿Cuál es tu nombre?\n"),
@@ -16,14 +18,18 @@ def get_player_profile(pokemon_list):
 
 
 def any_player_pokemon_lives(player_profile):
+    # Returns a boolean value depending on wether the player has any living Pokemon in his inventory.
     return sum([pokemon["current_health"] for pokemon in player_profile["pokemon_inventory"]]) > 0
 
 
 def get_pokemon_info(pokemon):
-    return "{} | lvl {} | HP {} / {}".format(pokemon["name"], pokemon["level"], pokemon["current_health"], pokemon["base_health"])
+    # Receives the data of a certain pokemon and returns a string with the relevant details for the player.
+    return "{} | lvl {} | HP {} / {}".format(pokemon["name"], pokemon["level"], pokemon["current_health"],
+                                             pokemon["base_health"])
 
 
 def choose_pokemon(player_profile):
+    # We ask the player to choose a Pokemon from his team.
     chosen_pokemon = None
     while not chosen_pokemon:
         print("Qué pokemon de tu equipo quieres que luche?")
@@ -42,6 +48,8 @@ def choose_pokemon(player_profile):
 
 
 def choose_player_attack(player_pokemon, enemy_pokemon):
+    # This will print all the available attacks to the player's fighting Pokemon based on its level and ask him to
+    # choose one.
     choosen_attack = None
     os.system("cls")
     print(get_pokemon_info(player_pokemon))
@@ -63,6 +71,7 @@ def choose_player_attack(player_pokemon, enemy_pokemon):
 
 
 def choose_enemy_attack(enemy_pokemon):
+    # Will return a random attack from the ones available to the enemy pokemon based on its level.
     available_enemy_attacks = []
     for attack in enemy_pokemon["attacks"]:
         if int(attack["min_level"]) <= enemy_pokemon["level"] != 0:
@@ -71,6 +80,8 @@ def choose_enemy_attack(enemy_pokemon):
 
 
 def player_turn(player_pokemon, player_attack, enemy_pokemon):
+    # Returns the damage of the player's attack to the enemy Pokemon after applying the corresponding
+    # multiplier.
     damage = player_attack["damage"] * decide_type_effect(player_attack["type"], enemy_pokemon["type"])
     print("Tu {} ha usado {} y le ha inflingido {} de daño al {} enemigo.".format(player_pokemon["name"],
                                                                                   player_attack["name"],
@@ -87,6 +98,8 @@ def player_turn(player_pokemon, player_attack, enemy_pokemon):
 
 
 def enemy_turn(player_pokemon, enemy_attack, enemy_pokemon):
+    # Returns the damage of the enemy's attack to the player's fighting Pokemon after applying the corresponding
+    # multiplier based on types.
     damage = enemy_attack["damage"] * decide_type_effect(enemy_attack["type"], player_pokemon["type"])
     print("\nEl {} enemigo ha usado {} y ha inflingido {} de daño a tu {}.".format(enemy_pokemon["name"],
                                                                                    enemy_attack["name"],
@@ -103,6 +116,7 @@ def enemy_turn(player_pokemon, enemy_attack, enemy_pokemon):
 
 
 def capture_pokemon(enemy_pokemon):
+    # After using a pokeball, the player will have a chance to capture a pokemon based on its current health.
     captured = None
     capturing_prob = (enemy_pokemon["current_health"] / enemy_pokemon["base_health"]) * 100
     if capturing_prob < random.randint(1, 100):
@@ -111,6 +125,8 @@ def capture_pokemon(enemy_pokemon):
 
 
 def decide_type_effect(attack_type, pokemon_type):
+    # We determine if a certain attack is strong, normal or weak against a Pokemon based in both types. We return a
+    # multiplier (1.25, 1 or 0.5) to apply to the final damage.
     weakness = {
         "normal": ["lucha"],
         "fuego": ["agua", "tierra", "roca"],
@@ -144,6 +160,8 @@ def decide_type_effect(attack_type, pokemon_type):
 
 
 def assign_experience(attack_history):
+    # We randomly assign 1 to 5 experience points to each pokemon that attacked during the last combat. A Pokemon
+    # will level up every 20 exp points.
     for pokemon in attack_history:
         points = random.randint(1, 5)
         pokemon["current_exp"] += points
@@ -156,6 +174,7 @@ def assign_experience(attack_history):
 
 
 def fortune_loot():
+    # We determine if the player gets an object after a fight and return a string containing the name of the object.
     fortune = random.randint(1, 3)
     if fortune == 1:
         return "potion"
@@ -166,16 +185,22 @@ def fortune_loot():
 
 
 def fight(player_profile, enemy_pokemon):
+    # We start every combat by printing the name of the enemy Pokemon and letting the player choose a Pokemon from his
+    # team to combat.
     os.system("cls")
     print("Que empiece el combate número {}!\nTe vas a enfrentar a {}.".format(player_profile["combats"] + 1,
                                                                                enemy_pokemon["name"]))
     player_pokemon = choose_pokemon(player_profile)
     captured_pokemon = None
     attack_history = []
+
+    # Unless the enemy pokemon is beaten or captured with a pokeball or player's team is defeated the fight will go on.
     while any_player_pokemon_lives(player_profile) and enemy_pokemon["current_health"] > 0 and not captured_pokemon:
         missed_turn = None
         action = None
-
+    # Player can choose to attack, use a potion or a pokeball or change pokemon. In the latter case enemy pokemon will
+    # attack anyway. The variable missed_turn is used to make sure the player doesn't loose his turn when trying to
+    # use an object while not having any in his inventory.
         while action not in ["A", "P", "V", "C"]:
             os.system("cls")
             print(get_pokemon_info(player_pokemon))
@@ -234,9 +259,12 @@ def fight(player_profile, enemy_pokemon):
 
 
 def main():
+    # This function will initialize the game by collecting all Pokemons' data and creating a player's profile.
     pokemon_list = get_all_pokemons()
     player_profile = get_player_profile(pokemon_list)
-
+    # We will make the player fight until all the Pokemons in his team are dead. When that happens we print a message
+    # with the amount of combats he survived. After every combat we will randomly give a pokeball or a health potion.
+    # Both player's team and enemy Pokemon are randomly choosen from pokefile.pkl.
     while any_player_pokemon_lives(player_profile):
         enemy_pokemon = random.choice(pokemon_list)
         fight(player_profile, enemy_pokemon)

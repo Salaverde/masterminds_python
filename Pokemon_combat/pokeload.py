@@ -13,6 +13,8 @@ URL_BASE = "https://www.pokexperto.net/index2.php?seccion=nds/nationaldex/movimi
 
 
 def get_pokemon(index):
+    # This function will get the webpage for a Pokemon being index its Pokedex number and fill in
+    # some of its data in a dictionary.
     url = "{}{}".format(URL_BASE, index)
     session = HTMLSession()
 
@@ -26,6 +28,9 @@ def get_pokemon(index):
         new_pokemon["type"].append(img.attrs["alt"])
 
     new_pokemon["attacks"] = []
+
+    # For every attack we must create a dictionary to include different entries (attack name, type, required lvl,etc...)
+    # In this case we will get the attacks from the first gen.
     for attack_item in pokemon_page.html.find(".pkmain")[-1].find("tr .check3"):
         attack = {
             "name": attack_item.find("td", first=True).find("a", first=True).text,
@@ -42,6 +47,9 @@ def get_pokemon(index):
 
 
 def get_all_pokemons():
+    # This function will call the get_pokemon function x times, x being the amount of Pokemon we want to have in our
+    # file. It will export this in a binary file called pokefile.pkl using the library "Pickle". Notice if there is a
+    # file with name "pokefile.pkl this function will take the data from there instead!!
     try:
         print("Cargando lista de pokemons...")
         with open("pokefile.pkl", "rb") as pokefile:
